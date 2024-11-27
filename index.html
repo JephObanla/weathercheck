@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+</head>
+<style>
+    /* body {
+        display:flex;
+        height: 100vh;
+    } */
+
+
+    .img {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('backgorund-pic.png');
+        z-index: -100;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .max-close {
+        animation: anim 2.0s;
+    }
+
+    @keyframes anim {
+        0% {
+            opacity: 0;
+            transform: translateY(100%);
+            filter: blur(3px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+    }
+
+    #weather-info #deg-cent {
+        font-size: 40px;
+        margin-left: 20px;
+        margin-top: 10px;
+        color: #fff;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+    .weatherCheck {
+        /* border: 2px solid red; */
+        margin-top: 5px;
+        width: 260px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #weatherCheck {
+        width: 160px;
+        height: 40px;
+        border: 2px solid rgb(82, 209, 244);
+        background-color: transparent;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: center;
+        border-radius: 10px;
+        margin-left: 45px;
+        margin-top: -10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #weatherCheck::placeholder {
+        color: #000;
+        font-weight: 200px;
+    }
+
+    .button {
+        /* width: 120px; */
+        height: 38px;
+        border: none;
+        background-color: rgb(82, 209, 244);
+        color: #000;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: center;
+        border-radius: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 3px;
+        cursor: pointer;
+    }
+
+    .button p {
+        padding: 10px;
+    }
+
+    .button:hover {
+        transform: scaleX(1.1);
+    }
+
+    /* @media screen and (max-width:667px) {
+        .max-close {
+            margin-top: 500px;
+        }
+    } */
+
+    /* 
+    #weather-info #deg-cent1 {
+        font-size: 40px;
+        float:left;
+        margin-top: 55px;
+        color: #fff;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    } */
+</style>
+
+<body>
+    <div class="img">
+        <!-- <img src="backgorund-pic.png" alt="pic"> -->
+    </div>
+    <div class="max-close" style="margin-top:160px;width:800px;margin-left:auto;margin-right:auto;">
+        <div class="close1" style="height:180px;width:220px;">
+            <!-- <span>&times;</span> -->
+            <h3
+                style="color:#fff;margin-left:20px;margin-top:10px;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size:30px;">
+                Now in <span id="location"></span></h3>
+            <div id="weather-info" style="display:inline-flex;margin-top:-45px;">
+                <h2 id="deg-cent"><span id="temp">0</span>&deg;C</h2>
+                <!-- <h2 id="deg-cent1"><span id="tempF">0</span>&deg;F</h2> -->
+                <div class="cloud"><img src="weather-icon.png" alt="Icon" width="150px" height="150px"
+                        style="margin-top:-40px;margin-left:-10px;"></div><br>
+            </div>
+            <p
+                style="margin-top:-40px;margin-left:20px;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size:20px;">
+                <b>Feels like <span id="deg-2"></span><span>&deg;C</span></b>
+            </p>
+        </div>
+
+        <div class="close2" style="height:190px;margin-left:auto;width:300px;text-align:center;margin-top:-185px;">
+            <h3 style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;" id="temp1"></h3>
+            <p style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size:20px;">
+                Cloud_pct :
+                <span id="precip"></span>%
+            </p>
+            <p style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size:20px;">Humidity
+                : <span id="humid"></span>%</p>
+            <p style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size:20px;">Wind
+                Speed : <span id="w-speed"></span>km/h</p>
+        </div>
+
+        <div class="weatherCheck" style="display:block;">
+            <h3
+                style="color: #000;text-align:center;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;margin-top:-4px;">
+                Check the weather today</h3>
+            <input type="text" name="weather" id="weatherCheck" placeholder="Input Location">
+            <div class="button" onclick="currentWeather()" id="but-chec">
+                <p>Check</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        //Fetch weather data from the API
+        // let endpoint = "http://api.weatherapi.com/v1/current.json?key=d988f2ab259f45c7889143302241809&q=kabba&aqi=no";
+        // let temp = document.getElementById("temp");
+        // let feelsLike = document.getElementById("deg-2");
+        // let temp1 = document.getElementById("temp1");
+        // let currentDate = document.getElementById("temp1");
+        // let precip = document.getElementById("precip");
+        // let humid = document.getElementById("humid");
+        // let wSpeed = document.getElementById("w-speed");
+        // let loc = document.getElementById("location");
+
+        // fetch(endpoint).then((res) => res.json())
+        //     .then((data) => {
+        //         console.log(data);
+        //         temp.textContent = data.current.temp_c;
+        //         feelsLike.innerHTML = data.current.feelslike_c;
+        //         temp1.innerHTML = data.current.condition.text;
+        //         temp1.style.fontSize = "25px";
+        //         temp1.style.color = "white";
+        //         precip.innerHTML = data.current.precip_mm;
+        //         humid.innerHTML = data.current.humidity;
+        //         wSpeed.innerHTML = data.current.wind_kph;
+        //         loc.innerHTML = data.location.name;
+        //     })
+
+
+        // Function to fetch weather data for different locations
+        function currentWeather() {
+            let city = document.getElementById("weatherCheck").value;
+            let endpoint = `http://api.weatherapi.com/v1/current.json?key=d988f2ab259f45c7889143302241809&q=${city}&aqi=no`;
+            let temp = document.getElementById("temp");
+            let feelsLike = document.getElementById("deg-2");
+            let temp1 = document.getElementById("temp1");
+            let currentDate = document.getElementById("temp1");
+            let precip = document.getElementById("precip");
+            let humid = document.getElementById("humid");
+            let wSpeed = document.getElementById("w-speed");
+            let loc = document.getElementById("location");
+            fetch(endpoint).then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    temp.textContent = data.current.temp_c;
+                    feelsLike.innerHTML = data.current.feelslike_c;
+                    temp1.innerHTML = data.current.condition.text;
+                    temp1.style.fontSize = "25px";
+                    temp1.style.color = "white";
+                    precip.innerHTML = data.current.precip_mm;
+                    // precip.innerHtml = data.current.cloud_pct;
+                    humid.innerHTML = data.current.humidity;
+                    wSpeed.innerHTML = data.current.wind_kph;
+                    loc.innerHTML = data.location.name;
+                })
+        }
+
+        // Function to handle weather check
+        // function currentWeather() {
+        //     const locationInput = document.getElementById("weatherCheck").value.trim();
+        //     if (locationInput) {
+        //         fetchWeather(locationInput);
+        //     } else {
+        //         alert("Please enter a valid location.");
+        //     }
+        // }
+    </script>
+</body>
+
+</html>
